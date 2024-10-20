@@ -28,9 +28,14 @@ class ListItem {
 		Loads the ListItem from DB.
 	*/
 	public function load(DatabaseInterface $db) : void {
+		$result = $db->query("select name, price from items where sku='$this->sku'");
 		
-		// TODO: implement
+		if (sizeof($result) != 1) {
+			throw new Exception("Item sku '$this->sku' not found in DB.");
+		} 
 		
+		$this->name = $result[0][0];
+		$this->price = $result[0][1];
 	}
 	
 	/**
@@ -49,20 +54,16 @@ class ListItem {
 		Inserts the ListItem into the database for the first time.
 	*/
 	public function insert(DatabaseInterface $db) : void {
+		assert($this->isReady());
 		
-		$db->query("helloo;");
-		
-		// TODO: implement
-		
+		$db->query("insert into items (sku, name, price) values ('$this->sku', '$this->name', $this->price)");
 	}
 	
 	/**
 		Removes the ListItem from the database.
 	*/
 	public function remove(DatabaseInterface $db) : void {
-		
-		// TODO: implement
-		
+		$db->query("delete from items where sku='$this->sku'");
 	}
 	
 	/**
@@ -136,7 +137,15 @@ class ListItem {
 class DVDDisc extends ListItem {
 	
 	public function load(DatabaseInterface $db) : void {
-		throw new Exception("Not implemented.");
+		ListItem::load($db);
+		
+		$result = $db->query("select size from dvds where sku='$this->sku'");
+		
+		if (sizeof($result) != 1) {
+			throw new Exception("DVDDisc sku '$this->sku' not found in DB.");
+		} 
+		
+		$this->size = $result[0][0];
 	}
 
 	public function save(DatabaseInterface $db) : void {
@@ -144,12 +153,15 @@ class DVDDisc extends ListItem {
 	}
 
 	public function insert(DatabaseInterface $db) : void {
-		//throw new Exception("Not implemented.");
+		assert($this->isReady());
+		
 		ListItem::insert($db);
+		
+		$db->query("insert into dvds (sku, size) values ('$this->sku', $this->size)");
 	}
 
 	public function remove(DatabaseInterface $db) : void {
-		throw new Exception("Not implemented.");
+		ListItem::remove($db);
 	}
 	
 	/**
@@ -186,7 +198,15 @@ class DVDDisc extends ListItem {
 class Book extends ListItem {
 	
 	public function load(DatabaseInterface $db) : void {
-		throw new Exception("Not implemented.");
+		ListItem::load($db);
+		
+		$result = $db->query("select weight from books where sku='$this->sku'");
+		
+		if (sizeof($result) != 1) {
+			throw new Exception("Book sku '$this->sku' not found in DB.");
+		} 
+		
+		$this->weight = $result[0][0];
 	}
 
 	public function save(DatabaseInterface $db) : void {
@@ -194,12 +214,15 @@ class Book extends ListItem {
 	}
 
 	public function insert(DatabaseInterface $db) : void {
-		//throw new Exception("Not implemented.");
+		assert($this->isReady());
+		
 		ListItem::insert($db);
+		
+		$db->query("insert into books (sku, weight) values ('$this->sku', $this->weight)");
 	}
 
 	public function remove(DatabaseInterface $db) : void {
-		throw new Exception("Not implemented.");
+		ListItem::remove($db);
 	}
 	
 	/**
@@ -235,7 +258,17 @@ class Book extends ListItem {
 class Furniture extends ListItem {
 	
 	public function load(DatabaseInterface $db) : void {
-		throw new Exception("Not implemented.");
+		ListItem::load($db);
+		
+		$result = $db->query("select width, height, length from furnitures where sku='$this->sku'");
+		
+		if (sizeof($result) != 1) {
+			throw new Exception("Furnitures sku '$this->sku' not found in DB.");
+		} 
+		
+		$this->width = $result[0][0];
+		$this->height = $result[0][1];
+		$this->length = $result[0][2];
 	}
 
 	public function save(DatabaseInterface $db) : void {
@@ -243,12 +276,15 @@ class Furniture extends ListItem {
 	}
 
 	public function insert(DatabaseInterface $db) : void {
-		//throw new Exception("Not implemented.");
+		assert($this->isReady());
+		
 		ListItem::insert($db);
+		
+		$db->query("insert into furnitures (sku, width, height, length) values ('$this->sku', $this->width, $this->height, $this->length)");
 	}
 
 	public function remove(DatabaseInterface $db) : void {
-		throw new Exception("Not implemented.");
+		ListItem::remove($db);
 	}
 	
 	/**

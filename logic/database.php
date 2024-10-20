@@ -25,22 +25,40 @@ interface DatabaseInterface {
 */
 class Database implements DatabaseInterface {
 	public function __construct() {
+		// You're not really supposed to put the database connection info into
+		// the source code, but I don't feel like doing anything fancy today.
+		$address = "localhost";
+		$username = "root";
+		$password = "";
 		
-		// TODO: implement
+		$this->connection = new mysqli($address, $username, $password);
+
+		if ($this->connection->connect_error) {
+			throw new Exception("Unable to connect to database.");
+		}
 		
+		$this->connection->select_db("scanditest");
 	}
 	
 	public function __destruct() {
-		
-		// TODO: implement
-		
+		$this->connection->close();
 	}
 	
 	public function query(string $query) {
+		$result = $this->connection->query($query);
 		
-		// TODO: implement
+		if (is_bool($result)) {
+			return $result;
+		} else {
+			return $result->fetch_all();
+		}
+		
+		//var_dump($result);
+		
 		
 	}
+	
+	private $connection = null;
 };
 
 /**
