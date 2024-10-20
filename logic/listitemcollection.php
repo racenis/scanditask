@@ -14,7 +14,7 @@ class ListItemCollection {
 		
 		@note This method is meant to be overriden by subclasses.
 	*/
-	public function load(DatabaseInterface $db) {
+	public function load(DatabaseInterface $db) : void {
 		throw new Exception("ListItemCollection cannot be loaded.");
 	}
 
@@ -54,14 +54,12 @@ class ListItemCollection {
 */
 class MainPageCollection extends ListItemCollection {
 	
-	/**
-		Loads items for the main page.
-	*/
-	public function load(DatabaseInterface $db) {
+	public function load(DatabaseInterface $db) : void {
 		throw new Exception("MainPageCollection cannot be loaded.");
 		
 		// TODO: implement
 	}
+	
 }
 
 

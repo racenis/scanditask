@@ -16,6 +16,8 @@ class ListItem {
 		@param $sku Need to input a SKU identifier. Must be globally unique.
 	*/
 	public function __construct(string $sku) {
+		assert(!empty($sku));
+		
 		$this->sku = $sku;
 		
 		$this->name = null;
@@ -83,6 +85,8 @@ class ListItem {
 		Sets the name of the item.
 	*/
 	public function setName(string $name) : void {
+		assert(!empty($name));
+		
 		$this->name = $name;
 	}
 	
@@ -99,6 +103,8 @@ class ListItem {
 		Sets the price of the item.
 	*/
 	public function setPrice(float $price) : void {
+		assert($price >= 0.0); // I assume we don't allow negative prices
+		
 		$this->price = $price;
 	}
 	
@@ -122,9 +128,195 @@ class ListItem {
 	private ?float $price;
 };
 
-class DVDDisc extends {
+
+
+/**
+	DVD disc item.
+*/
+class DVDDisc extends ListItem {
 	
+	public function load(DatabaseInterface $db) : void {
+		throw new Exception("Not implemented.");
+	}
+
+	public function save(DatabaseInterface $db) : void {
+		throw new Exception("Not implemented.");
+	}
+
+	public function insert(DatabaseInterface $db) : void {
+		//throw new Exception("Not implemented.");
+		ListItem::insert($db);
+	}
+
+	public function remove(DatabaseInterface $db) : void {
+		throw new Exception("Not implemented.");
+	}
 	
+	/**
+		Returns the size of the disc in megabytes.
+	*/
+	public function getSize() : float {
+		assert(!is_null($this->size));
+		
+		return $this->size;
+	}
+	
+	/**
+		Sets the size of the disc in megabytes.
+	*/
+	public function setSize(float $size) : void {
+		assert($size >= 0.0);
+		assert($size < 20.0 * 1024.0); // there's probably no DVDs this large
+		
+		$this->size = $size;
+	}
+	
+	public function isReady() : bool {
+		return !is_null($this->size) and ListItem::isReady();
+	}
+	
+	private ?float $size = null;
 };
+
+
+
+/**
+	Book item.
+*/
+class Book extends ListItem {
+	
+	public function load(DatabaseInterface $db) : void {
+		throw new Exception("Not implemented.");
+	}
+
+	public function save(DatabaseInterface $db) : void {
+		throw new Exception("Not implemented.");
+	}
+
+	public function insert(DatabaseInterface $db) : void {
+		//throw new Exception("Not implemented.");
+		ListItem::insert($db);
+	}
+
+	public function remove(DatabaseInterface $db) : void {
+		throw new Exception("Not implemented.");
+	}
+	
+	/**
+		Returns the weight of the book in kilograms.
+	*/
+	public function getWeight() : float {
+		assert(!is_null($this->weight));
+		
+		return $this->weight;
+	}
+	
+	/**
+		Sets the weight of the book in kilograms.
+	*/
+	public function setWeight(float $weight) : void {
+		assert($weight >= 0.0);
+		
+		$this->weight = $weight;
+	}
+	
+	public function isReady() : bool {
+		return !is_null($this->weight) and ListItem::isReady();
+	}
+	
+	private ?float $weight = null;
+};
+
+
+
+/**
+	Furniture item.
+*/
+class Furniture extends ListItem {
+	
+	public function load(DatabaseInterface $db) : void {
+		throw new Exception("Not implemented.");
+	}
+
+	public function save(DatabaseInterface $db) : void {
+		throw new Exception("Not implemented.");
+	}
+
+	public function insert(DatabaseInterface $db) : void {
+		//throw new Exception("Not implemented.");
+		ListItem::insert($db);
+	}
+
+	public function remove(DatabaseInterface $db) : void {
+		throw new Exception("Not implemented.");
+	}
+	
+	/**
+		Returns the width of the furniture in arbitrary units.
+	*/
+	public function getWidth() : float {
+		assert(!is_null($this->width));
+		
+		return $this->width;
+	}
+	
+	/**
+		Sets the width of the furniture in arbitrary units.
+	*/
+	public function setWidth(float $width) : void {
+		assert($width >= 0.0);
+		
+		$this->width = $width;
+	}
+	
+	/**
+		Returns the width of the furniture in arbitrary units.
+	*/
+	public function getHeight() : float {
+		assert(!is_null($this->height));
+		
+		return $this->height;
+	}
+	
+	/**
+		Sets the width of the furniture in arbitrary units.
+	*/
+	public function setHeight(float $height) : void {
+		assert($height >= 0.0);
+		
+		$this->height = $height;
+	}
+	
+	/**
+		Returns the width of the furniture in arbitrary units.
+	*/
+	public function getLength() : float {
+		assert(!is_null($this->length));
+		
+		return $this->length;
+	}
+	
+	/**
+		Sets the width of the furniture in arbitrary units.
+	*/
+	public function setLength(float $length) : void {
+		assert($length >= 0.0);
+		
+		$this->length = $length;
+	}
+	
+	public function isReady() : bool {
+		return !is_null($this->width)
+			and !is_null($this->height)
+			and !is_null($this->length)
+			and ListItem::isReady();
+	}
+	
+	private ?float $width = null;
+	private ?float $height = null;
+	private ?float $length = null;
+};
+
+
 
 ?>

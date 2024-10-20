@@ -61,8 +61,6 @@ $list_item->insert($db_mock);
 
 assert($db_mock->was_queried);
 
-
-
 Logger::getInstance()->write("Test finished.");
 
 ?>
