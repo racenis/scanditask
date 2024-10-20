@@ -47,9 +47,6 @@ class AddItemPageGlue {
 				$success = false;
 			}
 			
-			
-			
-			
 			// we could send the user back to the form, but with all of the
 			// submitted data filled in. we will not do this.
 			
@@ -70,22 +67,6 @@ class AddItemPageGlue {
 			$page = new AddItemPage();
 			$page->emit();
 		}
-		
-		
-		
-		// TODO: add a check for POST
-		// if this is getting posted, then check which items need to be yeeted
-		// and then yeet them.
-		
-		//$database = new Database;
-		
-		//$collection = new MainPageCollection;
-		//$collection->load($database);
-		
-		
-		
-		//$page->setCollection($collection);
-		
 	}
 };
 

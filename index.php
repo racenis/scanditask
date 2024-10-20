@@ -1,7 +1,7 @@
 <?php
 
-require "pages/index.php";
 require "logic/listitemcollection.php";
+require "pages/index.php";
 
 class IndexPageGlue {
 	public function __construct() {
@@ -24,7 +24,6 @@ class IndexPageGlue {
 		
 		$page->setCollection($collection);
 		$page->emit();
-	
 	}
 };
 

@@ -12,10 +12,10 @@ class Template {
 				<script src="assets/pagescript.js"></script>
 				<?php echo $header_content; ?>
 			</head>
-			<body bgcolor="black">
+			<body background="assets/sky1.gif">
 				<font color="white">
 					<center>
-						<table width="800">
+						<table width="800" bgcolor="black">
 							<tr>
 								<td>
 		<?php
@@ -25,7 +25,17 @@ class Template {
 		?>
 									<hr/>
 									<center>
-										website 2024
+										Scandiweb Test assignment
+									</center>
+									<hr/>
+									<center>
+										<img src="assets/800x600.gif"/>
+										<img src="assets/drpepper.gif"/>
+										<img src="assets/esheep.gif"/>
+										<img src="assets/hicolor.gif"/>
+										<img src="assets/mysql5.gif"/>
+										<img src="assets/notepadpp.gif"/>
+										<img src="assets/valid-bad.gif"/>
 									</center>
 								</td>
 							</tr>
@@ -37,9 +47,5 @@ class Template {
 		<?php
 	}
 }
-
-
-
-
 
 ?>

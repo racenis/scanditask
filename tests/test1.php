@@ -9,18 +9,8 @@ require "../logic/listitem.php";
 
 Logger::setConsoleDebug(true);
 
-class ListItemDBMock extends MockDatabase {
-	/*public function __construct() {
-		
-	}
-	
-	public function __destruct() {
-		Logger::getInstance()->write("Database connection terminated.");
-	}*/
-	
+class ListItemDBMock extends MockDatabase {	
 	public function query(string $query) {
-		/*Logger::getInstance()->write("Database query: " . $query);*/
-		
 		$this->was_queried = true;
 		
 		MockDatabase::query($query);

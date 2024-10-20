@@ -52,10 +52,6 @@ class Database implements DatabaseInterface {
 		} else {
 			return $result->fetch_all();
 		}
-		
-		//var_dump($result);
-		
-		
 	}
 	
 	private $connection = null;

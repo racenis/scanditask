@@ -217,6 +217,9 @@ class AddItemSuccessPage implements Page {
 		
 		<center>
 			<font color="green">
+				<img src="assets/frog3.gif"/>
+				<img src="assets/frog4.gif"/>
+				<img src="assets/frog5.gif"/>
 				<h3>
 					FORM SUBMITTED SUCCESSFULLY.
 				</h3>
@@ -233,13 +236,15 @@ class AddItemSuccessPage implements Page {
 class AddItemFailurePage implements Page {
 	public function emit() {
 		$template = new Template;
-		$template->emitBegin("Product Success", "<meta http-equiv=\"refresh\" content=\"3;url=add-item.php\"/>\n");
+		$template->emitBegin("Product Success", "<meta http-equiv=\"refresh\" content=\"3;url=add-product\"/>\n");
 		
 		?>
 		<marquee>
 			<font color="red">
 				<h1>
+					<img src="assets/danger.gif"/>
 					VERY UNSUCCESSFUL!
+					<img src="assets/danger.gif"/>
 				</h1>
 			</font>
 		</marquee>

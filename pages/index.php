@@ -19,8 +19,8 @@ class IndexPage implements Page {
 					</h1>
 				</td>
 				<td>
-					<button onclick="location.href='add-item.php'" type="button">Add</button>
-					<input type="submit" value="Mass Delete"/>
+					<button onclick="location.href='add-product'" type="button">ADD</button>
+					<input type="submit" value="MASS DELETE"/>
 				</td>
 			</tr>
 		</table>
@@ -47,7 +47,7 @@ class IndexPage implements Page {
 					?>
 					<td>
 						<center>
-							<input type="checkbox" name="<?php echo $item->getSKU(); ?>"/>
+							<input type="checkbox" class="delete-checkbox" name="<?php echo $item->getSKU(); ?>"/>
 						
 							<?php echo $item->getSKU(); ?>
 							<br/>
@@ -55,29 +55,11 @@ class IndexPage implements Page {
 							<br/>
 							<?php echo $item->getPrice(); ?>$
 							<br/>
-							<?php
-								switch(true) {  
-									case $item instanceof DVDDisc:
-										echo "{$item->getSize()} MB";
-										break;
-									case $item instanceof Book:
-										echo "{$item->getWeight()} KG";
-										break;
-									case $item instanceof Furniture:
-										echo "{$item->getWidth()}x{$item->getHeight()}x{$item->getLength()}";
-										break;
-									default:
-										echo "<i>N/A</i>";
-										break;
-								}
-							?>
+							<?php echo $this->descriptionMapping($item); ?>
 						</center>
 					</td>
 					<?php
 				}
-				
-				
-				
 				
 				?>
 				
@@ -95,6 +77,28 @@ class IndexPage implements Page {
 		$this->collection = $collection;
 	}
 	
+	private function descriptionMapping($list_item) {
+		if (!isset($this->item_mapping[get_class($list_item)])) {
+			return "<i>N/A</i>";
+		}
+
+		return $this->item_mapping[get_class($list_item)]($list_item);
+	}
+	
+	public function __construct() {
+		$this->item_mapping = [
+			DVDDisc::class => function($item) {
+				return "Size: {$item->getSize()} MB";
+			},
+			Book::class => function($item) {
+				return "Weight: {$item->getWeight()} KG";
+			},
+			Furniture::class => function($item) {
+				return "Dimension: {$item->getWidth()}x{$item->getHeight()}x{$item->getLength()}";
+			}];
+	}
+	
+	private $item_mapping = null;
 	private $collection = null;
 };
 

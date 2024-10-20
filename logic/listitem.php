@@ -153,8 +153,6 @@ class DVDDisc extends ListItem {
 	}
 
 	public function insert(DatabaseInterface $db) : void {
-		var_dump($this);
-		
 		assert($this->isReady());
 		
 		ListItem::insert($db);
@@ -163,8 +161,6 @@ class DVDDisc extends ListItem {
 		// in the base class.
 		echo "insert into dvds (sku, size) values ('$this->sku', $this->size)";
 		$db->query("insert into dvds (sku, size) values ('$this->sku', $this->size)");
-		
-		var_dump($this);
 	}
 
 	public function remove(DatabaseInterface $db) : void {
