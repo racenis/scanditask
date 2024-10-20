@@ -45,8 +45,8 @@ class ListItemCollection implements Iterator {
 		return isset($this->items[$this->current_item]);
 	}
 	
-	private $items = [];
-	private int $current_item = 0;
+	protected $items = [];
+	protected int $current_item = 0;
 };
 
 /**
@@ -55,7 +55,7 @@ class ListItemCollection implements Iterator {
 class MainPageCollection extends ListItemCollection {
 	
 	public function load(DatabaseInterface $db) : void {
-		$db_items = $db->query("select items.sku, items.name, items.price, dvds.size, books.weight, furnitures.width, furnitures.height, furnitures.length from items left join dvds on items.sku = dvds.sku left join books on items.sku = books.sku left join furnitures on items.sku = furnitures.sku");
+		$db_items = $db->query("select items.sku, items.name, items.price, dvds.size, books.weight, furnitures.width, furnitures.height, furnitures.length from items left join dvds on items.sku = dvds.sku left join books on items.sku = books.sku left join furnitures on items.sku = furnitures.sku order by items.sku");
 		
 		foreach ($db_items as $db_item) {
 			$item = null;
@@ -66,17 +66,17 @@ class MainPageCollection extends ListItemCollection {
 				$item->setPrice($db_item[2]);
 				$item->setSize($db_item[3]);
 			} else if (!is_null($db_item[4])) {
-				$item = new DVDDisc($db_item[0]);
+				$item = new Book($db_item[0]);
 				$item->setName($db_item[1]);
 				$item->setPrice($db_item[2]);
-				$item->setWeigth($db_item[4]);
+				$item->setWeight($db_item[4]);
 			} else if (!is_null($db_item[5]) and !is_null($db_item[6]) and !is_null($db_item[7])) {
-				$item = new DVDDisc($db_item[0]);
+				$item = new Furniture($db_item[0]);
 				$item->setName($db_item[1]);
 				$item->setPrice($db_item[2]);
-				$item->setSize($db_item[5]);
-				$item->setSize($db_item[6]);
-				$item->setSize($db_item[7]);
+				$item->setWidth($db_item[5]);
+				$item->setHeight($db_item[6]);
+				$item->setLength($db_item[7]);
 			} else {
 				$item = new ListItem($db_item[0]);
 				$item->setName($db_item[1]);

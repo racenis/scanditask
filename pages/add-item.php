@@ -6,10 +6,28 @@ require "template.php";
 class AddItemPage implements Page {
 	public function emit() {
 		$template = new Template;
-		$template->emitBegin("Product List");
+		$template->emitBegin("Product Add");
 		
 		?>
-			<form action="add-item.php">
+			<form action="add-item.php" method="post" onsubmit="return validate_all()">
+		
+			<table>
+				<tr>
+					<td width="600">
+						<h1>
+							Product List
+						</h1>
+					</td>
+					<td>
+						<input type="submit" value="Save"/>
+						<button onclick="location.href='./'" type="button">Cancel</button>
+					</td>
+				</tr>
+			</table>
+			
+			<hr/>
+		
+			
 		
 			<table width="200" border="2">
 				<tr id="general-error" style="display:none">
@@ -50,7 +68,7 @@ class AddItemPage implements Page {
 						<label id="name-label" for="name">Name</label>
 					</td>
 					<td>
-						<input type="text" id="name" name="name"/>
+						<input type="text" id="name" name="name" onchange="validate_name()"/>
 					</td>
 				</tr>
 				
@@ -66,7 +84,7 @@ class AddItemPage implements Page {
 						<label id="price-label" for="name">Price ($)</label>
 					</td>
 					<td>
-						<input type="text" id="price" name="price"/>
+						<input type="text" id="price" name="price" onchange="validate_price()"/>
 					</td>
 				</tr>
 				
@@ -88,7 +106,7 @@ class AddItemPage implements Page {
 						Provide the disc size informaton. This is a helpful description.
 					</td>
 				</tr>
-				<tr id="price-error" class="disc-options" style="display:none">
+				<tr id="size-error" class="disc-options" style="display:none">
 					<td colspan="2">
 						<font color="red">
 							The size is inadequate. Please reconsider.
@@ -100,7 +118,7 @@ class AddItemPage implements Page {
 						<label id="size-label" for="size">Size (MB)</label>
 					</td>
 					<td>
-						<input type="text" id="size" name="size"/>
+						<input type="text" id="size" name="size" onchange="validate_size()"/>
 					</td>
 				</tr>
 			
@@ -122,7 +140,7 @@ class AddItemPage implements Page {
 						<label id="weight-label" for="weight">Weight (KG)</label>
 					</td>
 					<td>
-						<input type="text" id="weight" name="weight"/>
+						<input type="text" id="weight" name="weight" onchange="validate_weight()"/>
 					</td>
 				</tr>
 
@@ -145,7 +163,7 @@ class AddItemPage implements Page {
 						<label id="height-label" for="height">Height</label>
 					</td>
 					<td>
-						<input type="text" id="height" name="height"/>
+						<input type="text" id="height" name="height" onchange="validate_dimension()"/>
 					</td>
 				</tr>
 				<tr class="furniture-options" style="display:none">
@@ -153,7 +171,7 @@ class AddItemPage implements Page {
 						<label id="width-label" for="width">Width</label>
 					</td>
 					<td>
-						<input type="text" id="width" name="width"/>
+						<input type="text" id="width" name="width" onchange="validate_dimension()"/>
 					</td>
 				</tr>
 				<tr class="furniture-options" style="display:none">
@@ -161,7 +179,7 @@ class AddItemPage implements Page {
 						<label id="length-label" for="length">Length</label>
 					</td>
 					<td>
-						<input type="text" id="length" name="length"/>
+						<input type="text" id="length" name="length" onchange="validate_dimension()"/>
 					</td>
 				</tr>
 			</table>
@@ -175,6 +193,66 @@ class AddItemPage implements Page {
 				<input type="submit" value="Save"/>
 			</form> 
 	
+		
+		<?php
+		
+		$template->emitEnd();
+	}
+}
+
+
+class AddItemSuccessPage implements Page {
+	public function emit() {
+		$template = new Template;
+		$template->emitBegin("Product Success", "<meta http-equiv=\"refresh\" content=\"2;url=./\"/>\n");
+		
+		?>
+		<marquee>
+			<font color="green">
+				<h1>
+					VERY SUCCESSFUL!
+				</h1>
+			</font>
+		</marquee>
+		
+		<center>
+			<font color="green">
+				<h3>
+					FORM SUBMITTED SUCCESSFULLY.
+				</h3>
+				<a href="./">CLICK HERE FOR REDIRECT!</a>
+			</font>
+		</center>
+		
+		<?php
+		
+		$template->emitEnd();
+	}
+}
+
+class AddItemFailurePage implements Page {
+	public function emit() {
+		$template = new Template;
+		$template->emitBegin("Product Success", "<meta http-equiv=\"refresh\" content=\"3;url=add-item.php\"/>\n");
+		
+		?>
+		<marquee>
+			<font color="red">
+				<h1>
+					VERY UNSUCCESSFUL!
+				</h1>
+			</font>
+		</marquee>
+		
+		<center>
+			<font color="red">
+				<h3>
+					FORM FAILED TO SUBMIT. YOU WILL HAVE TO RE-ENTER ALL OF THE
+					DATA IN THE FORM.
+				</h3>
+				<a href="add-item.php">CLICK HERE FOR REDIRECT!</a>
+			</font>
+		</center>
 		
 		<?php
 		

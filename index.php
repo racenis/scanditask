@@ -5,12 +5,17 @@ require "logic/listitemcollection.php";
 
 class IndexPageGlue {
 	public function __construct() {
-		
-		// TODO: add a check for POST
-		// if this is getting posted, then check which items need to be yeeted
-		// and then yeet them.
-		
 		$database = new Database;
+		
+		if ($_SERVER["REQUEST_METHOD"] == "POST") {
+			foreach ($_POST as $key => $value) {
+				if ($value != "on") continue;
+				
+				$item = new ListItem($key);
+				
+				$item->remove($database);
+			}
+		} 
 		
 		$collection = new MainPageCollection;
 		$collection->load($database);
@@ -19,6 +24,7 @@ class IndexPageGlue {
 		
 		$page->setCollection($collection);
 		$page->emit();
+	
 	}
 };
 

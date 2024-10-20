@@ -1,7 +1,7 @@
 <?php
 
 class Template {
-	function emitBegin($page_title) {
+	function emitBegin($page_title, $header_content = "") {
 		?>
 		<!doctype html>
 		<html>
@@ -10,6 +10,7 @@ class Template {
 					<?php echo $page_title; ?>
 				</title>
 				<script src="assets/pagescript.js"></script>
+				<?php echo $header_content; ?>
 			</head>
 			<body bgcolor="black">
 				<font color="white">

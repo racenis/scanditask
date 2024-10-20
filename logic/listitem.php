@@ -123,10 +123,10 @@ class ListItem {
 	}
 	
 	
-	private string $sku;
+	protected string $sku;
 	
-	private ?string $name;
-	private ?float $price;
+	protected ?string $name;
+	protected ?float $price;
 };
 
 
@@ -153,11 +153,18 @@ class DVDDisc extends ListItem {
 	}
 
 	public function insert(DatabaseInterface $db) : void {
+		var_dump($this);
+		
 		assert($this->isReady());
 		
 		ListItem::insert($db);
 		
+		// if this fails, we should probably roll back the previous insertion.
+		// in the base class.
+		echo "insert into dvds (sku, size) values ('$this->sku', $this->size)";
 		$db->query("insert into dvds (sku, size) values ('$this->sku', $this->size)");
+		
+		var_dump($this);
 	}
 
 	public function remove(DatabaseInterface $db) : void {

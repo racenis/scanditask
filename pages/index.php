@@ -9,6 +9,8 @@ class IndexPage implements Page {
 		$template->emitBegin("Product List");
 		
 		?>
+		<form action="index.php" method="post">
+		
 		<table>
 			<tr>
 				<td width="600">
@@ -17,7 +19,8 @@ class IndexPage implements Page {
 					</h1>
 				</td>
 				<td>
-					Add | Delete
+					<button onclick="location.href='add-item.php'" type="button">Add</button>
+					<input type="submit" value="Mass Delete"/>
 				</td>
 			</tr>
 		</table>
@@ -44,6 +47,8 @@ class IndexPage implements Page {
 					?>
 					<td>
 						<center>
+							<input type="checkbox" name="<?php echo $item->getSKU(); ?>"/>
+						
 							<?php echo $item->getSKU(); ?>
 							<br/>
 							<?php echo $item->getName(); ?>
@@ -79,6 +84,8 @@ class IndexPage implements Page {
 			</tr>
 		</table>
 
+		</form>
+		
 		<?php
 		
 		$template->emitEnd();
