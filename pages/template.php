@@ -9,6 +9,7 @@ class Template {
 				<title>
 					<?php echo $page_title; ?>
 				</title>
+				<script src="assets/pagescript.js"></script>
 			</head>
 			<body bgcolor="black">
 				<font color="white">
@@ -21,6 +22,10 @@ class Template {
 	
 	function emitEnd() {
 		?>
+									<hr/>
+									<center>
+										website 2024
+									</center>
 								</td>
 							</tr>
 						</table>

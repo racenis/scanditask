@@ -1,29 +1,27 @@
 <?php
 
 require "pages/index.php";
-require "logic/listitem.php";
+require "logic/listitemcollection.php";
 
 class IndexPageGlue {
 	public function __construct() {
-		$collection = ListItemCollection;
 		
-		$list_item = new ListItem("toobaboopa");
-
-		$list_item->setName("tattatata");
-		$list_item->setPrice(1239183401924);
+		// TODO: add a check for POST
+		// if this is getting posted, then check which items need to be yeeted
+		// and then yeet them.
 		
-		$collection->append($list_item);
-		$collection->append($list_item);
-		$collection->append($list_item);
-		$collection->append($list_item);
-		$collection->append($list_item);
+		$database = new Database;
+		
+		$collection = new MainPageCollection;
+		$collection->load($database);
 		
 		$page = new IndexPage();
 		
-		$page->Emit($collection);
+		$page->setCollection($collection);
+		$page->emit();
 	}
 };
 
-$glue = IndexPageGlue;
+$glue = new IndexPageGlue;
 
 ?>

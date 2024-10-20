@@ -7,7 +7,7 @@ require "listitem.php";
 
 	Can be iterated over using a foreach loop.
 */
-class ListItemCollection {
+class ListItemCollection implements Iterator {
 
 	/**
 		Loads the item collection from the database.
@@ -26,7 +26,7 @@ class ListItemCollection {
 	}
 	
 	public function rewind() : void {
-		$this->position = 0;
+		$this->current_item = 0;
 	}
 
 	public function current() {
@@ -45,8 +45,8 @@ class ListItemCollection {
 		return isset($this->items[$this->current_item]);
 	}
 	
-	private var items = [];
-	private int current_item = 0;
+	private $items = [];
+	private int $current_item = 0;
 };
 
 /**
@@ -55,9 +55,36 @@ class ListItemCollection {
 class MainPageCollection extends ListItemCollection {
 	
 	public function load(DatabaseInterface $db) : void {
-		throw new Exception("MainPageCollection cannot be loaded.");
+		$db_items = $db->query("select items.sku, items.name, items.price, dvds.size, books.weight, furnitures.width, furnitures.height, furnitures.length from items left join dvds on items.sku = dvds.sku left join books on items.sku = books.sku left join furnitures on items.sku = furnitures.sku");
 		
-		// TODO: implement
+		foreach ($db_items as $db_item) {
+			$item = null;
+			
+			if (!is_null($db_item[3])) {
+				$item = new DVDDisc($db_item[0]);
+				$item->setName($db_item[1]);
+				$item->setPrice($db_item[2]);
+				$item->setSize($db_item[3]);
+			} else if (!is_null($db_item[4])) {
+				$item = new DVDDisc($db_item[0]);
+				$item->setName($db_item[1]);
+				$item->setPrice($db_item[2]);
+				$item->setWeigth($db_item[4]);
+			} else if (!is_null($db_item[5]) and !is_null($db_item[6]) and !is_null($db_item[7])) {
+				$item = new DVDDisc($db_item[0]);
+				$item->setName($db_item[1]);
+				$item->setPrice($db_item[2]);
+				$item->setSize($db_item[5]);
+				$item->setSize($db_item[6]);
+				$item->setSize($db_item[7]);
+			} else {
+				$item = new ListItem($db_item[0]);
+				$item->setName($db_item[1]);
+				$item->setPrice($db_item[2]);
+			}
+
+			$this->append($item);
+		}
 	}
 	
 }
