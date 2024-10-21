@@ -5,7 +5,7 @@
 	that sort of thing.	
 */
 
-require "../logic/listitem.php";
+require_once "../logic/listitem.php";
 
 Logger::setConsoleDebug(true);
 

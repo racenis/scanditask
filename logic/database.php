@@ -1,6 +1,7 @@
 <?php
 
-require "logging.php";
+require_once "logging.php";
+require_once __DIR__."/../config.php";
 
 /**
 	SQL database interface.
@@ -25,11 +26,9 @@ interface DatabaseInterface {
 */
 class Database implements DatabaseInterface {
 	public function __construct() {
-		// You're not really supposed to put the database connection info into
-		// the source code, but I don't feel like doing anything fancy today.
-		$address = "localhost";
-		$username = "root";
-		$password = "";
+		$address = Config::$db_address;
+		$username = Config::$db_user;
+		$password = Config::$db_password;
 		
 		$this->connection = new mysqli($address, $username, $password);
 
@@ -37,7 +36,7 @@ class Database implements DatabaseInterface {
 			throw new Exception("Unable to connect to database.");
 		}
 		
-		$this->connection->select_db("scanditest");
+		$this->connection->select_db(Config::$db_name);
 	}
 	
 	public function __destruct() {

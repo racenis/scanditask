@@ -1,7 +1,7 @@
 <?php
 
-require "logic/listitemcollection.php";
-require "pages/index.php";
+require_once "logic/listitemcollection.php";
+require_once "pages/index.php";
 
 class IndexPageGlue {
 	public function __construct() {
@@ -16,7 +16,7 @@ class IndexPageGlue {
 				$item->remove($database);
 			}
 		} 
-		
+
 		$collection = new MainPageCollection;
 		$collection->load($database);
 		

@@ -1,7 +1,7 @@
 <?php
 
-require "pages/add-item.php";
-require "logic/listitem.php";
+require_once "pages/add-item.php";
+require_once "logic/listitem.php";
 
 class AddItemPageGlue {
 	public function __construct() {

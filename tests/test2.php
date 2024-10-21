@@ -4,7 +4,7 @@
 	This test checks if specific list items get created and all well.
 */
 
-require "../logic/listitem.php";
+require_once "../logic/listitem.php";
 
 Logger::setConsoleDebug(true);
 

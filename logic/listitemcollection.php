@@ -1,6 +1,6 @@
 <?php
 
-require "listitem.php";
+require_once "listitem.php";
 
 /**
 	Generic list of ListItems.

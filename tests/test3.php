@@ -7,7 +7,7 @@
 	set up to be written to.
 */
 
-require "../logic/listitem.php";
+require_once "../logic/listitem.php";
 
 Logger::setConsoleDebug(true);
 

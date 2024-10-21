@@ -1,7 +1,7 @@
 <?php
 
-require "page.php";
-require "template.php";
+require_once "page.php";
+require_once "template.php";
 
 class IndexPage implements Page {
 	public function emit() {
@@ -9,7 +9,7 @@ class IndexPage implements Page {
 		$template->emitBegin("Product List");
 		
 		?>
-		<form action="index.php" method="post">
+		<form action="./" method="post">
 		
 		<table>
 			<tr>

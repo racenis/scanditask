@@ -1,6 +1,6 @@
 <?php
 
-require "database.php";
+require_once "database.php";
 
 /**
 	Basic store item.
@@ -159,7 +159,6 @@ class DVDDisc extends ListItem {
 		
 		// if this fails, we should probably roll back the previous insertion.
 		// in the base class.
-		echo "insert into dvds (sku, size) values ('$this->sku', $this->size)";
 		$db->query("insert into dvds (sku, size) values ('$this->sku', $this->size)");
 	}
 

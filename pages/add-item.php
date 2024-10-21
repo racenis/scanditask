@@ -1,7 +1,7 @@
 <?php
 
-require "page.php";
-require "template.php";
+require_once "page.php";
+require_once "template.php";
 
 class AddItemPage implements Page {
 	public function emit() {
@@ -204,7 +204,7 @@ class AddItemPage implements Page {
 class AddItemSuccessPage implements Page {
 	public function emit() {
 		$template = new Template;
-		$template->emitBegin("Product Success", "<meta http-equiv=\"refresh\" content=\"2;url=./\"/>\n");
+		$template->emitBegin("Product Success", "<meta http-equiv=\"refresh\" content=\"3;url=./\"/>\n");
 		
 		?>
 		<marquee>
