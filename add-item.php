@@ -21,7 +21,7 @@ class AddItemPageGlue {
 				
 				$item->insert($database);
 				
-			} catch (Exception $e) {
+			} catch (\Throwable $e) {
 				$success = false;
 			}
 			
