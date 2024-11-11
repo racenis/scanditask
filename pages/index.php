@@ -55,7 +55,7 @@ class IndexPage implements Page {
 							<br/>
 							<?php echo $item->getPrice(); ?>$
 							<br/>
-							<?php echo $this->descriptionMapping($item); ?>
+							<?php echo $this->getSpecialProperty($item); ?>
 						</center>
 					</td>
 					<?php
@@ -77,28 +77,14 @@ class IndexPage implements Page {
 		$this->collection = $collection;
 	}
 	
-	private function descriptionMapping($list_item) {
-		if (!isset($this->item_mapping[get_class($list_item)])) {
-			return "<i>N/A</i>";
-		}
-
-		return $this->item_mapping[get_class($list_item)]($list_item);
+	private function getSpecialProperty($item) {
+		$props = $item->getSpecialProperty();
+		
+		if (is_null($props)) return "";
+		
+		return "{$props->GetName()}: {$props->GetValue()} {$props->GetUnit()}";
 	}
 	
-	public function __construct() {
-		$this->item_mapping = [
-			DVDDisc::class => function($item) {
-				return "Size: {$item->getSize()} MB";
-			},
-			Book::class => function($item) {
-				return "Weight: {$item->getWeight()} KG";
-			},
-			Furniture::class => function($item) {
-				return "Dimension: {$item->getWidth()}x{$item->getHeight()}x{$item->getLength()}";
-			}];
-	}
-	
-	private $item_mapping = null;
 	private $collection = null;
 };
 

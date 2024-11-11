@@ -3,6 +3,36 @@
 require_once "database.php";
 
 /**
+	Special property of a ListItem.
+	
+	This will be displayed on the store page, each type having a different
+	property.
+*/
+class ListItemSpecialProperty {
+	public function __construct(string $name, string $value, string $unit) {
+		$this->name = $name;
+		$this->value = $value;
+		$this->unit = $unit;
+	}
+	
+	public function getName() {
+		return $this->name;
+	}
+	
+	public function getValue() {
+		return $this->value;
+	}
+	
+	public function getUnit() {
+		return $this->unit;
+	}
+	
+	protected string $name;
+	protected string $value;
+	protected string $unit;
+};
+
+/**
 	Basic store item.
 */
 class ListItem {
@@ -122,6 +152,14 @@ class ListItem {
 		return !is_null($this->name) and !is_null($this->price);
 	}
 	
+	/**
+		Returns the item's special property, if it has one.
+		
+		@return Either a property or a null.
+	*/
+	public function getSpecialProperty() : ?ListItemSpecialProperty {
+		return null;
+	}
 	
 	protected string $sku;
 	
@@ -189,6 +227,10 @@ class DVDDisc extends ListItem {
 		return !is_null($this->size) and ListItem::isReady();
 	}
 	
+	public function getSpecialProperty() : ?ListItemSpecialProperty {
+		return new ListItemSpecialProperty("Size", "{$this->size}", "MB");
+	}
+	
 	private ?float $size = null;
 };
 
@@ -247,6 +289,10 @@ class Book extends ListItem {
 	
 	public function isReady() : bool {
 		return !is_null($this->weight) and ListItem::isReady();
+	}
+	
+	public function getSpecialProperty() : ?ListItemSpecialProperty {
+		return new ListItemSpecialProperty("Weight", "{$this->weight}", "KG");
 	}
 	
 	private ?float $weight = null;
@@ -350,11 +396,180 @@ class Furniture extends ListItem {
 			and ListItem::isReady();
 	}
 	
+	public function getSpecialProperty() : ?ListItemSpecialProperty {
+		return new ListItemSpecialProperty("Dimension", "{$this->getHeight()}x{$this->getWidth()}x{$this->getLength()}", "");
+	}
+	
 	private ?float $width = null;
 	private ?float $height = null;
 	private ?float $length = null;
 };
 
+class ListItemFactory {
+	/**
+		Returns a string name of the type that the factory is producing.
+	*/
+	public function getName() : string {
+		return "Item";
+	}
+	
+	/**
+		Constructs an instance of a class from a database query.
+	*/
+	public function getInstanceFromDBQuery($row) : ?ListItem {
+		return null;
+	}
+	
+	/**
+		Constructs an instance of a class from a post request.
+	*/
+	public function getInstanceFromPost($post) : ?ListItem {
+		return null;
+	}
+	
+	/**
+		Registers a factory.
+	*/
+	public static function register(ListItemFactory $factory) {
+		ListItemFactory::$factory_list[$factory->getName()] = $factory;
+	}
+	
+	/**
+		Creates a ListItem instance with the appropriate type.
+	*/
+	public static function buildFromDB($props) : ?ListItem {
+		foreach (ListItemFactory::$factory_list as $factory) {
+			$new_item = $factory->getInstanceFromDBQuery($props);
+			
+			if (!is_null($new_item)) return $new_item;
+		}
+		
+		return null;
+	}
+	
+	/**
+		Creates a ListItem instance with the appropriate type.
+	*/
+	public static function buildFromPost($request) : ?ListItem {
+		foreach (ListItemFactory::$factory_list as $factory) {
+			$new_item = $factory->getInstanceFromPost($request);
+			
+			if (!is_null($new_item)) return $new_item;
+		}
 
+		return null;
+	}
+	
+	
+	private static $factory_list = [];
+};
+
+class DVDDiscFactory extends ListItemFactory {
+	public function __construct() {
+		ListItemFactory::register($this);
+	}
+	
+	public function getName() : string {
+		return "DVD";
+	}
+	
+	public function getInstanceFromDBQuery($props) : ?ListItem {
+		if (is_null($props["size"])) return null;
+		
+		$item = new DVDDisc($props["sku"]);
+		$item->setName($props["name"]);
+		$item->setPrice($props["price"]);
+		$item->setSize($props["size"]);
+		
+		return $item;
+	}
+	
+	public function getInstanceFromPost($post) : ?ListItem {
+		if ($post["productType"] != "DVD") return null;
+		
+		$item = new DVDDisc($post["sku"]);
+		$item->setName($post["name"]);
+		$item->setPrice($post["price"]);
+		$item->setSize($post["size"]);
+		
+		return $item;
+	}
+};
+
+$dvddisc_factory = new DVDDiscFactory;
+
+class BookFactory extends ListItemFactory {
+	public function __construct() {
+		ListItemFactory::register($this);
+	}
+	
+	public function getName() : string {
+		return "Book";
+	}
+	
+	public function getInstanceFromDBQuery($props) : ?ListItem {
+		if (is_null($props["weight"])) return null;
+		
+		$item = new Book($props["sku"]);
+		$item->setName($props["name"]);
+		$item->setPrice($props["price"]);
+		$item->setWeight($props["weight"]);
+		
+		return $item;
+	}
+	
+	public function getInstanceFromPost($post) : ?ListItem {
+		if ($post["productType"] != "Book") return null;
+		
+		$item = new Book($post["sku"]);
+		$item->setName($post["name"]);
+		$item->setPrice($post["price"]);
+		$item->setWeight($post["weight"]);
+		
+		return $item;
+	}
+};
+
+$book_factory = new BookFactory;
+
+class FurnitureFactory extends ListItemFactory {
+	public function __construct() {
+		ListItemFactory::register($this);
+	}
+	
+	public function getName() : string {
+		return "Furniture";
+	}
+	
+	public function getInstanceFromDBQuery($props) : ?ListItem {
+		if (is_null($props["width"])
+			|| is_null($props["height"])
+			|| is_null($props["length"])) return null;
+		
+		$item = new Furniture($props["sku"]);
+		$item->setName($props["name"]);
+		$item->setPrice($props["price"]);
+		$item->setWidth($props["width"]);
+		$item->setHeight($props["height"]);
+		$item->setLength($props["length"]);
+		
+		return $item;
+	}
+	
+	public function getInstanceFromPost($post) : ?ListItem {
+		if ($post["productType"] != "Furniture") return null;
+		
+		$item = new Furniture($post["sku"]);
+		$item->setName($post["name"]);
+		$item->setPrice($post["price"]);
+		$item->setWidth($post["width"]);
+		$item->setHeight($post["height"]);
+		$item->setLength($post["length"]);
+		
+		return $item;
+	}
+};
+
+$furniture_factory = new FurnitureFactory;
 
 ?>

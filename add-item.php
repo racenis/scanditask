@@ -15,29 +15,7 @@ class AddItemPageGlue {
 			// I hope that no-one tries to do a SQL injection here.
 			// It would be very neat if someone actually bothered to do so.
 			try {
-				$item = null;
-				
-				switch ($_POST["productType"]) {
-					case "DVD":
-						$item = new DVDDisc($_POST["sku"]);
-						$item->setSize($_POST["size"]);
-						break;
-					case "Book":
-						$item = new Book($_POST["sku"]);
-						$item->setWeight($_POST["weight"]);
-						break;
-					case "Furniture":
-						$item = new Furniture($_POST["sku"]);
-						$item->setWidth($_POST["width"]);
-						$item->setHeight($_POST["height"]);
-						$item->setLength($_POST["length"]);
-						break;
-					default:
-						$item = new ListItem($_POST["sku"]);
-				}
-				
-				$item->setName($_POST["name"]);
-				$item->setPrice($_POST["price"]);
+				$item = ListItemFactory::buildFromPost($_POST);
 				
 				$database = new Database;
 				

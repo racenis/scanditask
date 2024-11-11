@@ -58,31 +58,18 @@ class MainPageCollection extends ListItemCollection {
 		$db_items = $db->query("select items.sku, items.name, items.price, dvds.size, books.weight, furnitures.width, furnitures.height, furnitures.length from items left join dvds on items.sku = dvds.sku left join books on items.sku = books.sku left join furnitures on items.sku = furnitures.sku order by items.sku");
 		
 		foreach ($db_items as $db_item) {
-			$item = null;
-			
-			if (!is_null($db_item[3])) {
-				$item = new DVDDisc($db_item[0]);
-				$item->setName($db_item[1]);
-				$item->setPrice($db_item[2]);
-				$item->setSize($db_item[3]);
-			} else if (!is_null($db_item[4])) {
-				$item = new Book($db_item[0]);
-				$item->setName($db_item[1]);
-				$item->setPrice($db_item[2]);
-				$item->setWeight($db_item[4]);
-			} else if (!is_null($db_item[5]) and !is_null($db_item[6]) and !is_null($db_item[7])) {
-				$item = new Furniture($db_item[0]);
-				$item->setName($db_item[1]);
-				$item->setPrice($db_item[2]);
-				$item->setWidth($db_item[5]);
-				$item->setHeight($db_item[6]);
-				$item->setLength($db_item[7]);
-			} else {
-				$item = new ListItem($db_item[0]);
-				$item->setName($db_item[1]);
-				$item->setPrice($db_item[2]);
-			}
+			$item_props = [];
+			$item_props["sku"] = $db_item[0];
+			$item_props["name"] = $db_item[1];
+			$item_props["price"] = $db_item[2];
+			$item_props["size"] = $db_item[3];
+			$item_props["weight"] = $db_item[4];
+			$item_props["width"] = $db_item[5];
+			$item_props["height"] = $db_item[6];
+			$item_props["length"] = $db_item[7];
 
+			$item = ListItemFactory::buildFromDB($item_props);
+			
 			$this->append($item);
 		}
 	}

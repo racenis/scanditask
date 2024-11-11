@@ -9,13 +9,13 @@ class AddItemPage implements Page {
 		$template->emitBegin("Product Add");
 		
 		?>
-			<form action="add-item.php" method="post" onsubmit="return validate_all()">
+			<form action="add-item.php" id="product_form" method="post" onsubmit="return validate_all()">
 		
 			<table>
 				<tr>
 					<td width="600">
 						<h1>
-							Product List
+							Product Add
 						</h1>
 					</td>
 					<td>
@@ -183,14 +183,7 @@ class AddItemPage implements Page {
 					</td>
 				</tr>
 			</table>
-			
-				
-				
-				
-				
-				
-				
-				<input type="submit" value="Save"/>
+
 			</form> 
 	
 		
